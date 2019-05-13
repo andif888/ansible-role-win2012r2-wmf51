@@ -1,0 +1,26 @@
+---
+# tasks file for ansible-role-win2012r2-wmf51
+- name: Download WMF5 install
+  win_get_url:
+    url: '{{ wmf51_download_url }}'
+    dest: '{{ wmf51_download_to_path }}'
+  when: 
+    - ansible_distribution.find("Server 2012 R2") != -1
+    - ansible_powershell_version is version('5', '<') 
+
+- name: Install WMF5
+  win_hotfix:
+    source: '{{ wmf51_download_to_path }}'
+    state: present
+  register: hotfix_install
+  when: 
+    - ansible_distribution.find("Server 2012 R2") != -1
+    - ansible_powershell_version is version('5', '<') 
+
+- name: reboot when install WMF5 requires it
+  win_reboot:
+  when:
+    - hotfix_install.changed
+    - hotfix_install.reboot_required
+
+  

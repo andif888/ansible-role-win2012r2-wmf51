@@ -1,0 +1,4 @@
+---
+# defaults file for ansible-role-win2012r2-wmf51
+wmf51_download_url: https://go.microsoft.com/fwlink/?linkid=839516
+wmf51_download_to_path: C:\Windows\Setup\Win8.1AndW2K12R2-KB3191564-x64.msu
